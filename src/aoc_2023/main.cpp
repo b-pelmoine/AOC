@@ -3,10 +3,4 @@
 
 #include <aoc_2023/all_days.hpp>
 
-int main()
-{
-  std::println("hello, world");
-  int a{ 0 };
-  foo::bar(&a);
-  std::println("{} {}", a, aoc::get());
-}
+int main() { std::println("{}", aoc::solve(aoc_2023::day1{})); }

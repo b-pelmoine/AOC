@@ -411,3 +411,6 @@ CTestTestfile.cmake
 _deps
 [Oo]ut/
 [Bb]uild/
+
+#aoc
+[Ii]nputs/
