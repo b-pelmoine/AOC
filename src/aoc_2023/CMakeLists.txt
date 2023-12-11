@@ -3,7 +3,7 @@ add_executable (aoc-2023)
 target_sources(aoc-2023
   PUBLIC
   main.cpp
-  day_1.cpp
+  day_01.cpp
 )
 
 target_link_libraries(aoc-2023
