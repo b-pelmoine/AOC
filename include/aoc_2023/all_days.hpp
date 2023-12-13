@@ -1,1 +1,0 @@
-#include "aoc_2023/day_01.hpp"
