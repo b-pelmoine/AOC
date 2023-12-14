@@ -13,7 +13,10 @@ template<std::integral auto _year, std::integral auto _day> struct day_for_year
   static constexpr auto get_date() { return std::format("{2:%Y}-{1:%m}-{0:%d}", day(), month(), year()); }
   static constexpr auto get_input() { return std::format("{}.txt", get_date()); }
   static constexpr auto get_input_path() { return std::filesystem::path{ s_inputs_directory } / get_input(); }
-  static constexpr auto get_test_input_path() { return std::filesystem::path{ s_test_inputs_directory } / get_input(); }
+  static constexpr auto get_example_input_path()
+  {
+    return std::filesystem::path{ s_example_inputs_directory } / get_input();
+  }
 
   static constexpr auto day() noexcept { return s_day; };
   static constexpr auto month() noexcept { return s_month; };

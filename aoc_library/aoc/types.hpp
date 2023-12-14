@@ -23,10 +23,10 @@ concept solvable = requires(T &&_problem, std::string &&_data, aoc::part _part) 
 template<typename T>
 concept testable = requires(T &&_problem, std::string &&_data, aoc::part _part) {
   {
-    _problem.test(std::move(_data), _part)
+    _problem.solve(std::move(_data), _part)
   } -> std::equality_comparable_with<decltype(_problem.expected_value(_part))>;
   {
-    _problem.get_test_input_path()
+    _problem.get_example_input_path()
   } -> std::convertible_to<std::filesystem::path>;
 };
 

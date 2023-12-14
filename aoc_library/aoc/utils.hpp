@@ -33,13 +33,13 @@ template<aoc::part _part> void solve_and_print(aoc::solvable auto &&_problem)
     std::println("{} \33[31;41m{} not found\33[0m", stringify<day_t, _part>(), day_t::get_input_path().string());
 }
 
-template<aoc::part _part> void test_and_print(aoc::testable auto &&_problem)
+template<aoc::part _part> void test_example_and_print(aoc::testable auto &&_problem)
 {
   using day_t = std::remove_cvref_t<decltype(_problem)>;
 
   const auto date = day_t::get_date();
 
-  if (const auto result = aoc::test<_part>(_problem)) {
+  if (const auto result = aoc::solve_example<_part>(_problem)) {
     const auto expected_result = _problem.expected_value(_part);
     if (result == expected_result) {
       std::println(
@@ -53,7 +53,8 @@ template<aoc::part _part> void test_and_print(aoc::testable auto &&_problem)
         *result);
     }
   } else {
-    std::println("{} \33[31;41m{} not found\33[0m", stringify<day_t, _part>(), day_t::get_test_input_path().string());
+    std::println(
+      "{} \33[31;41m{} not found\33[0m", stringify<day_t, _part>(), day_t::get_example_input_path().string());
   }
 }
 }// namespace aoc::utils
