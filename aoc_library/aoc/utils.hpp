@@ -37,8 +37,6 @@ template<aoc::part _part> void test_example_and_print(aoc::testable auto &&_prob
 {
   using day_t = std::remove_cvref_t<decltype(_problem)>;
 
-  const auto date = day_t::get_date();
-
   if (const auto result = aoc::solve_example<_part>(_problem)) {
     const auto expected_result = _problem.expected_value(_part);
     if (result == expected_result) {
