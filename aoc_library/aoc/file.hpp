@@ -2,9 +2,12 @@
 
 #include "aoc/types.hpp"
 
+#include <filesystem>
 #include <fstream>
 #include <iterator>
 #include <optional>
+#include <string>
+#include <string_view>
 
 namespace aoc {
 inline constexpr auto s_inputs_directory = std::string_view{ "inputs" };
@@ -17,10 +20,8 @@ static std::optional<std::string> read_file(std::filesystem::path _path)
   if (!file.is_open())
     return {};
 
-  using Iterator = std::istreambuf_iterator<char>;
-  auto buffer = std::string{ Iterator{ file }, Iterator{} };
-
-  return buffer;
+  using istream_it = std::istreambuf_iterator<char>;
+  return std::string{ istream_it{ file }, istream_it{} };
 }
 
 template<aoc::part _part> static auto solve(solvable auto &&_problem)

@@ -2,6 +2,7 @@
 
 #include "aoc/file.hpp"
 
+#include <chrono>
 #include <concepts>
 #include <filesystem>
 #include <format>
