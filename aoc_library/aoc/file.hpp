@@ -23,17 +23,17 @@ static std::optional<std::string> read_file(std::filesystem::path _path)
   return buffer;
 }
 
-template<part_flags _parts> static std::optional<std::string> solve(solvable auto &&_problem)
+template<aoc::part _part> static auto solve(solvable auto &&_problem)
 {
   return read_file(_problem.get_input_path()).transform([&](auto &&_input) {
-    return _problem.solve(std::move(_input), _parts);
+    return _problem.solve(std::move(_input), _part);
   });
 }
 
-template<part_flags _parts> static std::optional<std::string> test(testable auto &&_problem)
+template<aoc::part _part> static auto test(testable auto &&_problem)
 {
   return read_file(_problem.get_test_input_path()).transform([&](auto &&_input) {
-    return _problem.test(std::move(_input), _parts);
+    return _problem.test(std::move(_input), _part);
   });
 }
 }// namespace aoc

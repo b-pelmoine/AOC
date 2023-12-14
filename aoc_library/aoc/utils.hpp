@@ -4,26 +4,56 @@
 #include "aoc/types.hpp"
 
 #include <print>
+#include <string_view>
 #include <type_traits>
 
 namespace aoc::utils {
-void print_day_solution(auto &&_ex, const auto &_path)
+
+template<aoc::part _part> constexpr auto stringify()
 {
-  if (_ex.has_value())
-    std::println("{}", _ex.value());
+  using namespace std::literals;
+  if constexpr (_part == aoc::part::_01)
+    return "part 01"sv;
+  else if constexpr (_part == aoc::part::_02)
+    return "part 02"sv;
+}
+
+template<typename Day, aoc::part _part> constexpr auto stringify()
+{
+  return std::format("{} [\33[37m{}\33[0m]", Day::get_date(), stringify<_part>());
+}
+
+template<aoc::part _part> void solve_and_print(aoc::solvable auto &&_problem)
+{
+  using day_t = std::remove_cvref_t<decltype(_problem)>;
+
+  if (const auto result = aoc::solve<_part>(_problem))
+    std::println("{}: {}", stringify<day_t, _part>(), result.value());
   else
-    std::println("\33[31;41m{} not found\33[0m", _path.string());
+    std::println("{} \33[31;41m{} not found\33[0m", stringify<day_t, _part>(), day_t::get_input_path().string());
 }
 
-template<part_flags _parts = part_flags{ aoc::both_parts }> void solve_and_print(aoc::solvable auto &&_problem)
+template<aoc::part _part> void test_and_print(aoc::testable auto &&_problem)
 {
   using day_t = std::remove_cvref_t<decltype(_problem)>;
-  print_day_solution(aoc::solve<_parts>(_problem), day_t::get_input_path());
-}
 
-template<part_flags _parts = aoc::both_parts> void test_and_print(aoc::testable auto &&_problem)
-{
-  using day_t = std::remove_cvref_t<decltype(_problem)>;
-  print_day_solution(aoc::test<_parts>(_problem), day_t::get_test_input_path());
+  const auto date = day_t::get_date();
+
+  if (const auto result = aoc::test<_part>(_problem)) {
+    const auto expected_result = _problem.expected_value(_part);
+    if (result == expected_result) {
+      std::println(
+        "{}: \33[32;1;42m[SUCCESS]\33[0m got expected answer \33[36m{}\33[0m", stringify<day_t, _part>(), *result);
+    } else {
+      std::println(
+        "{}: \33[31;1;41m[FAILURE]\33[0m expected \33[36m{}\33[0m but got \33[36m{}\33[0m "
+        "instead",
+        stringify<day_t, _part>(),
+        expected_result,
+        *result);
+    }
+  } else {
+    std::println("\33[31;41m{} not found\33[0m", day_t::get_test_input_path().string());
+  }
 }
 }// namespace aoc::utils

@@ -2,32 +2,29 @@
 
 #include <concepts>
 #include <filesystem>
+#include <format>
 #include <string>
 #include <type_traits>
 
 namespace aoc {
 
-enum class part_flags { p1 = 1 << 0, p2 = 1 << 1, both = p1 | p2 };
-
-inline constexpr auto part_01 = part_flags::p1;
-inline constexpr auto part_02 = part_flags::p2;
-inline constexpr auto both_parts = part_flags::both;
+enum class part { _01, _02 };
 
 template<typename T>
-concept solvable = requires(T &&_problem, std::string &&_data, aoc::part_flags _parts) {
+concept solvable = requires(T &&_problem, std::string &&_data, aoc::part _part) {
   {
-    _problem.solve(std::move(_data), _parts)
-  } -> std::convertible_to<std::string>;
+    _problem.solve(std::move(_data), _part)
+  } -> std::integral;
   {
     _problem.get_input_path()
   } -> std::convertible_to<std::filesystem::path>;
 };
 
 template<typename T>
-concept testable = requires(T &&_problem, std::string &&_data, aoc::part_flags _parts) {
+concept testable = requires(T &&_problem, std::string &&_data, aoc::part _part) {
   {
-    _problem.test(std::move(_data), _parts)
-  } -> std::convertible_to<std::string>;
+    _problem.test(std::move(_data), _part)
+  } -> std::equality_comparable_with<decltype(_problem.expected_value(_part))>;
   {
     _problem.get_test_input_path()
   } -> std::convertible_to<std::filesystem::path>;

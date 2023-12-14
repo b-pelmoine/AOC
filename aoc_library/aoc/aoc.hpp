@@ -23,9 +23,6 @@ template<std::integral auto _year, std::integral auto _day> struct day_for_year
   static constexpr std::chrono::year s_year{ _year };
   static constexpr auto s_month{ std::chrono::December };
 
-  virtual std::string solve(std::string &&_input, aoc::part_flags = aoc::both_parts) noexcept { return _input; };
-  virtual std::string test(std::string &&_input, aoc::part_flags = aoc::both_parts) noexcept { return _input; };
-
   static_assert([]() {
     using namespace std::chrono_literals;
     // 25 days, started in 2015

@@ -11,8 +11,9 @@ template<std::integral auto _day> using y2023 = aoc::day_for_year<2023, _day>;
 
 struct day_01 : public y2023<aoc::day_01>
 {
-  std::string solve(std::string &&_input, aoc::part_flags _parts) noexcept override;
-  std::string test(std::string &&_input, aoc::part_flags _parts) noexcept override;
+  uint64_t solve(std::string &&_input, aoc::part _part) noexcept;
+  uint64_t test(std::string &&_input, aoc::part _part) noexcept;
+  uint64_t expected_value(aoc::part _part) const noexcept { return _part == aoc::part::_01 ? 142 : 281; }
 };
 
 }// namespace aoc_2023
