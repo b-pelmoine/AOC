@@ -53,7 +53,7 @@ template<aoc::part _part> void test_and_print(aoc::testable auto &&_problem)
         *result);
     }
   } else {
-    std::println("\33[31;41m{} not found\33[0m", day_t::get_test_input_path().string());
+    std::println("{} \33[31;41m{} not found\33[0m", stringify<day_t, _part>(), day_t::get_test_input_path().string());
   }
 }
 }// namespace aoc::utils

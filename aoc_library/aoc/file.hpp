@@ -8,7 +8,7 @@
 
 namespace aoc {
 inline constexpr auto s_inputs_directory = std::string_view{ "inputs" };
-inline constexpr auto s_test_inputs_directory = std::string_view{ "inputs/test" };
+inline constexpr auto s_test_inputs_directory = std::string_view{ "inputs\\test" };
 
 static std::optional<std::string> read_file(std::filesystem::path _path)
 {
