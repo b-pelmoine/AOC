@@ -27,9 +27,10 @@ template<aoc::part _part> void solve_and_print(aoc::solvable auto &&_problem)
 {
   using day_t = std::remove_cvref_t<decltype(_problem)>;
 
-  if (const auto result = aoc::solve<_part>(_problem))
-    std::println("{}: {}", stringify<day_t, _part>(), result.value());
-  else
+  if (const auto result_and_duration = aoc::solve<_part>(_problem)) {
+    const auto [result, duration] = *result_and_duration;
+    std::println("{}: \33[36m{}\33[0m in \33[35m{}\33[0m", stringify<day_t, _part>(), result, duration);
+  } else
     std::println("{} \33[31;41m{} not found\33[0m", stringify<day_t, _part>(), day_t::get_input_path().string());
 }
 
