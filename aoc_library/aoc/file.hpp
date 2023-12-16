@@ -53,7 +53,7 @@ template<aoc::part _part> static auto solve(solvable auto &&_problem)
 template<aoc::part _part> static auto solve_example(testable auto &&_problem)
 {
   return read_file(_problem.get_example_input_path()).transform([&](auto &&_input) {
-    return _problem.solve(std::move(_input), _part);
+    return solve_and_mesure_duration_for(std::move(_input), _part, _problem);
   });
 }
 }// namespace aoc
