@@ -15,10 +15,6 @@ target_compile_options(all-aoc INTERFACE
   $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
 )
 
-target_include_directories(all-aoc ${WARNING_GUARD} INTERFACE 
-  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-  $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>)
-
 add_executable(all-aoc-selector)
 
 target_sources(all-aoc-selector
@@ -37,9 +33,5 @@ target_compile_options(all-aoc-selector PRIVATE
   $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
   $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
 )
-
-target_include_directories(all-aoc-selector ${WARNING_GUARD} PUBLIC 
-  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-  $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>)
 
 add_subdirectory(workbench)
