@@ -25,14 +25,14 @@ static std::optional<std::string> read_file(std::filesystem::path _path)
   return std::string{ istream_it{ file }, istream_it{} };
 }
 
-auto solve_and_mesure_duration_for(auto &&_input, aoc::part _part, auto &&_problem)
+auto solve_and_mesure_duration_for(auto &&_input, aoc::part _part, solvable auto &&_problem)
 {
   using day_t = std::remove_cvref_t<decltype(_problem)>;
-  using input_t = decltype(_input);
+  using result_t = decltype(std::declval<day_t>().solve({}, {}));
 
   struct res_and_duration
   {
-    decltype(std::declval<day_t>().solve(std::declval<input_t>(), std::declval<aoc::part>())) result;
+    result_t result;
     std::chrono::nanoseconds duration;
   };
 

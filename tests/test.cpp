@@ -2,27 +2,57 @@
 #include <catch2/catch_session.hpp>
 #include <catch2/catch_test_macros.hpp>
 
-#include <cstdint>
+#include <all_days.hpp>
 
-uint32_t factorial(uint32_t number) { return number <= 1 ? number : factorial(number - 1) * number; }
-
-TEST_CASE("Factorials are computed", "[factorial]")
+template<aoc::part _part> auto solve_part(aoc::testable auto _problem)
 {
-  REQUIRE(factorial(1) == 1);
-  REQUIRE(factorial(2) == 2);
-  REQUIRE(factorial(3) == 6);
-  REQUIRE(factorial(10) == 3'628'800);
+  using day_t = std::remove_cvref_t<decltype(_problem)>;
+  using result_t = decltype(std::declval<day_t>().solve({}, {}));
+
+  struct res_both_parts
+  {
+    result_t part_result;
+    result_t expected_part_result;
+  };
+
+  const auto expected_result = _problem.expected_value(_part);
+
+  auto input = aoc::read_file(_problem.get_example_input_path(_part));
+
+  REQUIRE(input);
+
+  return res_both_parts{ _problem.solve(std::move(*input), _part), expected_result };
 }
 
-uint64_t fibonacci(uint64_t number) { return number < 2 ? number : fibonacci(number - 1) + fibonacci(number - 2); }
-
-TEST_CASE("Benchmark Fibonacci", "[!benchmark]")
+auto solve_example(aoc::testable auto _problem)
 {
-  REQUIRE(fibonacci(5) == 5);
+  using day_t = std::remove_cvref_t<decltype(_problem)>;
+  using result_t = decltype(std::declval<day_t>().solve({}, {}));
 
-  REQUIRE(fibonacci(20) == 6'765);
-  BENCHMARK("fibonacci 20") { return fibonacci(20); };
+  struct res_both_parts
+  {
+    result_t part_01;
+    result_t expected_part_01;
+    result_t part_02;
+    result_t expected_part_02;
+  };
 
-  REQUIRE(fibonacci(25) == 75'025);
-  BENCHMARK("fibonacci 25") { return fibonacci(25); };
+  const auto [part_01, expected_part_01] = solve_part<aoc::part::_01>(_problem);
+  const auto [part_02, expected_part_02] = solve_part<aoc::part::_02>(_problem);
+
+  return res_both_parts{ part_01, expected_part_01, part_02, expected_part_02 };
+}
+
+template<typename Problem>
+  requires aoc::testable<Problem>
+void check_example_for()
+{
+  const auto [part_01, expected_part_01, part_02, expected_part_02] = solve_example(Problem{});
+  THEN("Part 01 solution has the expected value") { CHECK(part_01 == expected_part_01); }
+  THEN("Part 02 solution has the expected value") { CHECK(part_02 == expected_part_02); }
+}
+
+TEST_CASE("AOC 2023 examples succeed", "[aoc][aoc-2023]")
+{
+  GIVEN("Day 01: Trebuchet?!") { check_example_for<aoc_2023::day_01>(); }
 }
