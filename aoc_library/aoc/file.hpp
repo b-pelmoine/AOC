@@ -45,14 +45,14 @@ auto solve_and_mesure_duration_for(auto &&_input, aoc::part _part, auto &&_probl
 
 template<aoc::part _part> static auto solve(solvable auto &&_problem)
 {
-  return read_file(_problem.get_input_path()).transform([&](auto &&_input) {
+  return read_file(_problem.get_input_path(_part)).transform([&](auto &&_input) {
     return solve_and_mesure_duration_for(std::move(_input), _part, _problem);
   });
 }
 
 template<aoc::part _part> static auto solve_example(testable auto &&_problem)
 {
-  return read_file(_problem.get_example_input_path()).transform([&](auto &&_input) {
+  return read_file(_problem.get_example_input_path(_part)).transform([&](auto &&_input) {
     return solve_and_mesure_duration_for(std::move(_input), _part, _problem);
   });
 }

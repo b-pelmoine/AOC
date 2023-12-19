@@ -11,12 +11,16 @@ namespace aoc {
 enum class part { _01, _02 };
 
 template<typename T>
+concept formattable =
+  requires(T &v, std::format_context ctx) { std::formatter<std::remove_cvref_t<T>>().format(v, ctx); };
+
+template<typename T>
 concept solvable = requires(T &&_problem, std::string &&_data, aoc::part _part) {
   {
     _problem.solve(std::move(_data), _part)
-  } -> std::integral;
+  } -> formattable;
   {
-    _problem.get_input_path()
+    _problem.get_input_path(_part)
   } -> std::convertible_to<std::filesystem::path>;
 };
 
@@ -26,7 +30,7 @@ concept testable = requires(T &&_problem, std::string &&_data, aoc::part _part) 
     _problem.solve(std::move(_data), _part)
   } -> std::equality_comparable_with<decltype(_problem.expected_value(_part))>;
   {
-    _problem.get_example_input_path()
+    _problem.get_example_input_path(_part)
   } -> std::convertible_to<std::filesystem::path>;
 };
 

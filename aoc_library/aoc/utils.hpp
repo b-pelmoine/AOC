@@ -31,7 +31,7 @@ template<aoc::part _part> void solve_and_print(aoc::solvable auto &&_problem)
     const auto [result, duration] = *result_and_duration;
     std::println("{}: \33[36m{}\33[0m in \33[35m{}\33[0m", stringify<day_t, _part>(), result, duration);
   } else
-    std::println("{} \33[31;41m{} not found\33[0m", stringify<day_t, _part>(), day_t::get_input_path().string());
+    std::println("{} \33[31;41m{} not found\33[0m", stringify<day_t, _part>(), day_t::get_input_path(_part).string());
 }
 
 template<aoc::part _part> void test_example_and_print(aoc::testable auto &&_problem)
@@ -56,7 +56,7 @@ template<aoc::part _part> void test_example_and_print(aoc::testable auto &&_prob
     }
   } else {
     std::println(
-      "{} \33[31;41m{} not found\33[0m", stringify<day_t, _part>(), day_t::get_example_input_path().string());
+      "{} \33[31;41m{} not found\33[0m", stringify<day_t, _part>(), day_t::get_example_input_path(_part).string());
   }
 }
 }// namespace aoc::utils
