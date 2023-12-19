@@ -14,9 +14,9 @@ constexpr auto part_shorthand(const part _part)
 {
   using namespace std::string_view_literals;
   switch (_part) {
-  case part::_01:
+  case part_01:
     return "p1"sv;
-  case part::_02:
+  case part_02:
     return "p2"sv;
   default:
     std::unreachable();

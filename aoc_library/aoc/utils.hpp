@@ -12,9 +12,9 @@ namespace aoc::utils {
 template<aoc::part _part> constexpr auto stringify()
 {
   using namespace std::literals;
-  if constexpr (_part == aoc::part::_01)
+  if constexpr (_part == aoc::part_01)
     return "part 01"sv;
-  else if constexpr (_part == aoc::part::_02)
+  else if constexpr (_part == aoc::part_02)
     return "part 02"sv;
 }
 

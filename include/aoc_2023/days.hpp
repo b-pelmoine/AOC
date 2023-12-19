@@ -16,7 +16,7 @@ using y2023 = aoc::day_for_year<2023, _day, _example_input, _input>;
 struct day_01 : public y2023<aoc::day_01, aoc::example_input::different_for_both_parts>
 {
   uint64_t solve(std::string &&_input, aoc::part _part) noexcept;
-  uint64_t expected_value(aoc::part _part) noexcept { return _part == aoc::part::_01 ? 142 : 281; }
+  uint64_t expected_value(aoc::part _part) noexcept { return _part == aoc::part_01 ? 142 : 281; }
 };
 
 }// namespace aoc_2023

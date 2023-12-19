@@ -10,6 +10,9 @@ namespace aoc {
 
 enum class part { _01, _02 };
 
+inline constexpr auto part_01 = part::_01;
+inline constexpr auto part_02 = part::_02;
+
 template<typename T>
 concept formattable =
   requires(T &v, std::format_context ctx) { std::formatter<std::remove_cvref_t<T>>().format(v, ctx); };

@@ -37,8 +37,8 @@ auto solve_example(aoc::testable auto _problem)
     result_t expected_part_02;
   };
 
-  const auto [part_01, expected_part_01] = solve_part<aoc::part::_01>(_problem);
-  const auto [part_02, expected_part_02] = solve_part<aoc::part::_02>(_problem);
+  const auto [part_01, expected_part_01] = solve_part<aoc::part_01>(_problem);
+  const auto [part_02, expected_part_02] = solve_part<aoc::part_02>(_problem);
 
   return res_both_parts{ part_01, expected_part_01, part_02, expected_part_02 };
 }
