@@ -2,7 +2,7 @@
 #include <catch2/catch_session.hpp>
 #include <catch2/catch_test_macros.hpp>
 
-#include <all_days.hpp>
+#include <aoc/all_days.hpp>
 
 template<aoc::part _part> auto solve_part(aoc::testable auto _problem)
 {
@@ -48,8 +48,8 @@ template<typename Problem>
 void check_example_for()
 {
   const auto [part_01, expected_part_01, part_02, expected_part_02] = solve_example(Problem{});
-  THEN("Part 01 solution has the expected value") { CHECK(part_01 == expected_part_01); }
-  THEN("Part 02 solution has the expected value") { CHECK(part_02 == expected_part_02); }
+  THEN(std::format("Part 01 solution is {}", expected_part_01)) { CHECK(part_01 == expected_part_01); }
+  THEN(std::format("Part 02 solution is {}", expected_part_02)) { CHECK(part_02 == expected_part_02); }
 }
 
 TEST_CASE("AOC 2023 examples succeed", "[aoc][aoc-2023]")

@@ -1,6 +1,5 @@
+#include <aoc/2023/days.hpp>
 #include <aoc/utils.hpp>
-
-#include "aoc_2023/days.hpp"
 
 int main()
 {
