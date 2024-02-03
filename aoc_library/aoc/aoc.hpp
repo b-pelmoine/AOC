@@ -10,62 +10,38 @@
 #include <string>
 
 namespace aoc {
-constexpr auto part_shorthand(const part _part)
+struct problem
 {
-  using namespace std::string_view_literals;
-  switch (_part) {
-  case part_01:
-    return "p1"sv;
-  case part_02:
-    return "p2"sv;
-  default:
-    std::unreachable();
-  }
-}
-enum class input { same_for_both_parts, different_for_both_parts };
-enum class example_input { same_for_both_parts, different_for_both_parts };
-template<std::integral auto _year,
-  std::integral auto _day,
-  example_input _example_input = example_input::same_for_both_parts,
-  input _input = input::same_for_both_parts>
-struct day_for_year
-{
-  static constexpr auto get_date() { return std::format("{2:%Y}-{1:%m}-{0:%d}", day(), month(), year()); }
-  static constexpr auto get_input(const part _part)
+  template<class Self> constexpr auto get_date(this Self &&self)
   {
-    if constexpr (_input == input::same_for_both_parts)
-      return std::format("{}.txt", get_date());
+    return std::format("{2:%Y}-{1:%m}-{0:%d}", self.day, self.month, self.year);
+  }
+  template<class Self> constexpr auto as_formattable(this Self &&self, const part _part)
+  {
+    return std::format("{} [\33[37mpart {}\33[0m]", self.get_date(), std::to_underlying(_part) + 1u);
+  }
+  template<class Self, bool _different_file_per_part = true> constexpr auto get_file(this Self &&self, const part _part)
+  {
+    if constexpr (_different_file_per_part)
+      return std::format("{}-p{}.txt", self.get_date(), std::to_underlying(_part) + 1u);
     else
-      return std::format("{}-{}.txt", get_date(), part_shorthand(_part));
+      return std::format("{}.txt", self.get_date());
   }
-  static constexpr auto get_example_input(const part _part)
+  template<class Self> constexpr auto get_input_file(this Self &&self, const part _part)
   {
-    if constexpr (_example_input == example_input::same_for_both_parts)
-      return std::format("{}.txt", get_date());
-    else
-      return std::format("{}-{}.txt", get_date(), part_shorthand(_part));
+    return self.get_file<Self, has_different_inputs<Self>>(_part);
   }
-  static constexpr auto get_input_path(const part _part)
+  template<class Self> constexpr auto get_result_file(this Self &&self, const part _part)
   {
-    return std::filesystem::path{ s_inputs_directory } / get_input(_part);
+    return self.get_file(_part);
   }
-  static constexpr auto get_example_input_path(const part _part)
+  template<class Self> constexpr auto get_input_path(this Self &&self, const part _part)
   {
-    return std::filesystem::path{ s_example_inputs_directory } / get_example_input(_part);
+    return std::filesystem::path{ s_inputs_directory } / self.get_input_file(_part);
   }
-
-  static constexpr auto day() noexcept { return s_day; };
-  static constexpr auto month() noexcept { return s_month; };
-  static constexpr auto year() noexcept { return s_year; };
-
-  static constexpr std::chrono::day s_day{ _day };
-  static constexpr std::chrono::year s_year{ _year };
-  static constexpr auto s_month{ std::chrono::December };
-
-  static_assert([]() {
-    using namespace std::chrono_literals;
-    // 25 days, started in 2015
-    return s_day >= 1d && s_day <= 25d && s_year >= 2015y;
-  }());
+  template<class Self> constexpr auto get_result_path(this Self &&self, const part _part)
+  {
+    return std::filesystem::path{ s_inputs_directory } / s_results_directory / self.get_result_file(_part);
+  }
 };
 }// namespace aoc

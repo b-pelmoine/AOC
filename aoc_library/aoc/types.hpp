@@ -24,18 +24,26 @@ concept solvable = requires(T &&_problem, std::string &&_data, aoc::part _part) 
   } -> formattable;
   {
     _problem.get_input_path(_part)
-  } -> std::convertible_to<std::filesystem::path>;
+  } -> std::same_as<std::filesystem::path>;
 };
 
 template<typename T>
 concept testable = requires(T &&_problem, std::string &&_data, aoc::part _part) {
+  solvable<T>;
   {
-    _problem.solve(std::move(_data), _part)
-  } -> std::equality_comparable_with<decltype(_problem.expected_value(_part))>;
-  {
-    _problem.get_example_input_path(_part)
-  } -> std::convertible_to<std::filesystem::path>;
+    _problem.get_result_path(_part)
+  } -> std::same_as<std::filesystem::path>;
 };
+
+template<typename T>
+concept printable = requires(T &&_problem, aoc::part _part) {
+  {
+    _problem.as_formattable(_part)
+  } -> formattable;
+};
+
+template<class T>
+concept has_different_inputs = std::remove_cvref_t<T>::different_inputs == true;
 
 // for a readable template argument
 inline constexpr auto day_01{ 1 };

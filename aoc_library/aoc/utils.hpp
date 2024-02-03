@@ -8,55 +8,56 @@
 #include <type_traits>
 
 namespace aoc::utils {
-
-template<aoc::part _part> constexpr auto stringify()
+template<aoc::part _part, class Problem>
+  requires aoc::testable<Problem> && aoc::printable<Problem>
+void solve_and_print(Problem &&_problem)
 {
-  using namespace std::literals;
-  if constexpr (_part == aoc::part_01)
-    return "part 01"sv;
-  else if constexpr (_part == aoc::part_02)
-    return "part 02"sv;
-}
+  const auto result_and_duration = aoc::solve<_part>(_problem);
 
-template<typename Day, aoc::part _part> constexpr auto stringify()
-{
-  return std::format("{} [\33[37m{}\33[0m]", Day::get_date(), stringify<_part>());
-}
-
-template<aoc::part _part> void solve_and_print(aoc::solvable auto &&_problem)
-{
-  using day_t = std::remove_cvref_t<decltype(_problem)>;
-
-  if (const auto result_and_duration = aoc::solve<_part>(_problem)) {
-    const auto [result, duration] = *result_and_duration;
-    std::println("{}: \33[36m{}\33[0m in \33[35m{}\33[0m", stringify<day_t, _part>(), result, duration);
-  } else
-    std::println("{} \33[31;41m{} not found\33[0m", stringify<day_t, _part>(), day_t::get_input_path(_part).string());
-}
-
-template<aoc::part _part> void test_example_and_print(aoc::testable auto &&_problem)
-{
-  using day_t = std::remove_cvref_t<decltype(_problem)>;
-
-  if (const auto result_and_duration = aoc::solve_example<_part>(_problem)) {
-    const auto [result, duration] = *result_and_duration;
-    const auto expected_result = _problem.expected_value(_part);
-    const auto duration_string = std::format("in \33[35m{}\33[0m", duration);
-    if (result == expected_result) {
-      std::println("{}: \33[32;1;42m[SUCCESS]\33[0m got expected answer \33[36m{}\33[0m {}",
-        stringify<day_t, _part>(),
-        result,
-        duration_string);
-    } else {
-      std::println("{}: \33[31;1;41m[FAILURE]\33[0m expected \33[36m{}\33[0m but got \33[36m{}\33[0m {}",
-        stringify<day_t, _part>(),
-        expected_result,
-        result,
-        duration_string);
-    }
-  } else {
+  if (!result_and_duration) {
     std::println(
-      "{} \33[31;41m{} not found\33[0m", stringify<day_t, _part>(), day_t::get_example_input_path(_part).string());
+      "{} \33[31;41m{} not found\33[0m", _problem.as_formattable(_part), _problem.get_input_path(_part).string());
+    return;
+  }
+
+  const auto [result, duration] = *result_and_duration;
+  std::println("{}: \33[36m{}\33[0m in \33[35m{}\33[0m", _problem.as_formattable(_part), result, duration);
+}
+
+template<aoc::part _part, class Problem>
+  requires aoc::testable<Problem> && aoc::printable<Problem>
+void solve_and_check_result(Problem &&_problem)
+{
+  const auto expected_result = aoc::get_expected_result<_part>(_problem);
+
+  if (!expected_result) {
+    std::println(
+      "{} \33[31;41m{} not found\33[0m", _problem.as_formattable(_part), _problem.get_result_path(_part).string());
+    return;
+  }
+
+  const auto result_and_duration = aoc::solve<_part>(_problem);
+
+  if (!result_and_duration) {
+    std::println(
+      "{} \33[31;41m{} not found\33[0m", _problem.as_formattable(_part), _problem.get_input_path(_part).string());
+    return;
+  }
+
+  const auto [result, duration] = *result_and_duration;
+  const auto result_string = std::format("{}", result);
+  const auto duration_string = std::format("in \33[35m{}\33[0m", duration);
+  if (result_string == *expected_result) {
+    std::println("{}: \33[32;1;42m[SUCCESS]\33[0m got expected answer \33[36m{}\33[0m {}",
+      _problem.as_formattable(_part),
+      result_string,
+      duration_string);
+  } else {
+    std::println("{}: \33[31;1;41m[FAILURE]\33[0m expected \33[36m{}\33[0m but got \33[36m{}\33[0m {}",
+      _problem.as_formattable(_part),
+      *expected_result,
+      result_string,
+      duration_string);
   }
 }
 }// namespace aoc::utils
