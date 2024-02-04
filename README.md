@@ -1,6 +1,7 @@
 # Advent of code
 This repository goal is to be forked by anyone and used as a framework to quickly get to work on advent of code problem solving.
-## using the AOC library
+The whole point is that every mundane common task is taken care of for you. The problem structure is based on very few [concepts](aoc_library/aoc/types.hpp) which makes it easily adptable to your use case and not dependant on types defined by the library but on the interface instead.
+## Using the AOC library
 The aoc library is an interface for setting up file reading and jump straight to parsing and solving the day's problem
 
 Setting up the year can be done by using the `aoc::problem_for_date` templated struct:
@@ -37,24 +38,6 @@ Running the workbench target again you should see:
 > 2023-12-01 [part 1]: 42 in 0us
 
 That's it for the setup, you now have access to the problem input in the _input variable and the part to solve in the _part variable.
-The return type of the solve method doesn't have to be anything specific the only requirement is that it can be formatted using the `std::format` formatter
-as described in the solvable concept:
-
-```cpp
-template<typename T>
-concept formattable =
-  requires(T &v, std::format_context ctx) { std::formatter<std::remove_cvref_t<T>>().format(v, ctx); };
-
-template<typename T>
-concept solvable = requires(T &&_problem, std::string &&_data, aoc::part _part) {
-  {
-    _problem.solve(std::move(_data), _part)
-  } -> formattable;
-  {
-    _problem.get_input_path(_part)
-  } -> std::same_as<std::filesystem::path>;
-};
-```
 
 ## Testing and benchmarking using **Catch2**
 Testing and benchmarking your problem can be done by compling with the `testable` concept
@@ -82,7 +65,7 @@ If you're only looking for tests or benchmarks you can use the functions `test` 
 
 ## Workbench testing
 
-Similarly to how tests are setup, to use `aoc::solve_and_check_result` the problem as to comply with the `printable` concept
+In addition to tests requirements, to use `aoc::solve_and_check_result` the problem struct has to comply with the `printable` concept
 ```cpp
 template<typename T>
 concept printable = requires(T &&_problem, aoc::part _part) {
@@ -105,5 +88,25 @@ Example output:
 ## FAQ
 > Both parts doesn't share the same input, what should I do?
 
-add a `static constexpr bool different_inputs = true` which will look for different input for each part:
+add a `static constexpr bool different_inputs = true` in your problem struct which will make the parser look for different input for each part:
 `inputs/YYYY-MM-DD-p1.txt` for part 1 and `inputs/YYYY-MM-DD-p2.txt` for part 2
+
+> The solution result is not a number, what should I return?
+
+anything formattable works, it doesn't have to be a number, it could be a `std::string` or your own structure for which you have a `std::formatter` template specialization as described in the solvable concept:
+
+```cpp
+template<typename T>
+concept formattable =
+  requires(T &v, std::format_context ctx) { std::formatter<std::remove_cvref_t<T>>().format(v, ctx); };
+
+template<typename T>
+concept solvable = requires(T &&_problem, std::string &&_data, aoc::part _part) {
+  {
+    _problem.solve(std::move(_data), _part)
+  } -> formattable;
+  {
+    _problem.get_input_path(_part)
+  } -> std::same_as<std::filesystem::path>;
+};
+```
