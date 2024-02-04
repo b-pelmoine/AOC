@@ -38,24 +38,6 @@ template<aoc::part _part> auto get_solution_and_expectation(aoc::testable auto _
   return std::tuple{ std::format("{}", _problem.solve(input, _part)), std::move(expectation) };
 }
 
-template<typename Problem>
-  requires aoc::testable<Problem>
-void benchmark()
-{
-  BENCHMARK_ADVANCED("part 1")(Catch::Benchmark::Chronometer _meter)
-  {
-    auto problem = Problem{};
-    _meter.measure(
-      [&, input_part_01 = get_input<aoc::part_01>(problem)] { return problem.solve(input_part_01, aoc::part_01); });
-  };
-  BENCHMARK_ADVANCED("part 2")(Catch::Benchmark::Chronometer _meter)
-  {
-    auto problem = Problem{};
-    _meter.measure(
-      [&, input_part_02 = get_input<aoc::part_02>(problem)] { return problem.solve(input_part_02, aoc::part_02); });
-  };
-}
-
 auto solve(aoc::testable auto _problem)
 {
   const auto [part_01_result, expected_part_01_result] = get_solution_and_expectation<aoc::part_01>(_problem);
@@ -74,8 +56,35 @@ void test(std::string_view _problem_name)
     THEN(std::format("Part 01 solution is {}", expected_part_01)) { CHECK(part_01 == expected_part_01); }
     AND_THEN(std::format("Part 02 solution is {}", expected_part_02)) { CHECK(part_02 == expected_part_02); }
   }
-
-  benchmark<aoc_2023::day_01>();
 }
 
-TEST_CASE("AOC 2023 examples succeed", "[aoc][aoc-2023]") { test<aoc_2023::day_01>("Day 01: Trebuchet?!"); }
+template<typename Problem>
+  requires aoc::testable<Problem>
+void benchmark(std::string_view _problem_name)
+{
+  SECTION(std::format("{} benchmarks", _problem_name))
+  {
+    BENCHMARK_ADVANCED("Part 01")(Catch::Benchmark::Chronometer _meter)
+    {
+      auto problem = Problem{};
+      _meter.measure(
+        [&, input_part_01 = get_input<aoc::part_01>(problem)] { return problem.solve(input_part_01, aoc::part_01); });
+    };
+    BENCHMARK_ADVANCED("Part 02")(Catch::Benchmark::Chronometer _meter)
+    {
+      auto problem = Problem{};
+      _meter.measure(
+        [&, input_part_02 = get_input<aoc::part_02>(problem)] { return problem.solve(input_part_02, aoc::part_02); });
+    };
+  }
+}
+
+template<typename Problem>
+  requires aoc::testable<Problem>
+void test_and_benchmark(std::string_view _problem_name)
+{
+  test<Problem>(_problem_name);
+  benchmark<Problem>(_problem_name);
+}
+
+TEST_CASE("AOC 2023 examples succeed", "[aoc][aoc-2023]") { test_and_benchmark<aoc_2023::day_01>("Day 01: Trebuchet?!"); }
