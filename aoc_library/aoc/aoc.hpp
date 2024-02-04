@@ -44,4 +44,11 @@ struct problem
     return std::filesystem::path{ s_inputs_directory } / s_results_directory / self.get_result_file(_part);
   }
 };
+
+template<std::integral auto _year, std::integral auto _day> struct problem_for_date : public aoc::problem
+{
+  std::chrono::day day{ _day };
+  std::chrono::month month{ std::chrono::December };
+  std::chrono::year year{ _year };
+};
 }// namespace aoc

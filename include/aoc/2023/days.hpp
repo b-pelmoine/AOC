@@ -8,12 +8,8 @@
 #include <aoc/types.hpp>
 
 namespace aoc_2023 {
-template<std::integral auto _day> struct y2023 : public aoc::problem
-{
-  std::chrono::day day{ _day };
-  std::chrono::month month{ std::chrono::December };
-  std::chrono::year year{ 2023 };
-};
+template<std::integral auto _day>
+using y2023 = aoc::problem_for_date<2023, _day>;
 
 struct day_01 : public y2023<aoc::day_01>
 {
