@@ -17,7 +17,7 @@ template<std::integral auto _day> struct y2023 : public aoc::problem
 
 struct day_01 : public y2023<aoc::day_01>
 {
-  uint64_t solve(std::string &&_input, aoc::part _part) noexcept;
+  uint64_t solve(std::string_view _input, aoc::part _part) noexcept;
 };
 
 }// namespace aoc_2023

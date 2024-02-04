@@ -21,7 +21,10 @@ void solve_and_print(Problem &&_problem)
   }
 
   const auto [result, duration] = *result_and_duration;
-  std::println("{}: \33[36m{}\33[0m in \33[35m{}\33[0m", _problem.as_formattable(_part), result, duration);
+  std::println("{}: \33[36m{}\33[0m in \33[35m{}\33[0m",
+    _problem.as_formattable(_part),
+    result,
+    std::chrono::duration_cast<std::chrono::microseconds>(duration));
 }
 
 template<aoc::part _part, class Problem>
@@ -46,7 +49,8 @@ void solve_and_check_result(Problem &&_problem)
 
   const auto [result, duration] = *result_and_duration;
   const auto result_string = std::format("{}", result);
-  const auto duration_string = std::format("in \33[35m{}\33[0m", duration);
+  const auto duration_string =
+    std::format("in \33[35m{}\33[0m", std::chrono::duration_cast<std::chrono::microseconds>(duration));
   if (result_string == *expected_result) {
     std::println("{}: \33[32;1;42m[SUCCESS]\33[0m got expected answer \33[36m{}\33[0m {}",
       _problem.as_formattable(_part),
