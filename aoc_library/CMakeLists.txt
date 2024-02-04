@@ -1,13 +1,6 @@
 add_library(aoc INTERFACE)
 add_library(aoc::aoc ALIAS aoc)
 
-find_package(Microsoft.GSL CONFIG REQUIRED)
-
-target_link_libraries(aoc 
-    INTERFACE 
-    Microsoft.GSL::GSL
-)
-
 target_compile_features(aoc INTERFACE cxx_std_23)
 
 target_compile_options(aoc INTERFACE
