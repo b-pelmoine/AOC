@@ -1,10 +1,13 @@
+#include "aoc/2023/days.hpp"
+#include "aoc/file.hpp"
+#include "aoc/types.hpp"
+#include "catch2/catch_message.hpp"
 #include <catch2/benchmark/catch_benchmark.hpp>
-#include <catch2/catch_session.hpp>
 #include <catch2/catch_test_macros.hpp>
 
-#include <utility>
+#include <string_view>
+#include <tuple>
 
-#include <aoc/all_days.hpp>
 
 template<aoc::part _part> auto get_input(const aoc::testable auto &_problem)
 {

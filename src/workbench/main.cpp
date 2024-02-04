@@ -1,3 +1,4 @@
+#include "aoc/types.hpp"
 #include <aoc/2023/days.hpp>
 #include <aoc/utils.hpp>
 
