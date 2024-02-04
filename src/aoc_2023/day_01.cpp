@@ -35,7 +35,7 @@ uint64_t as_number(std::string_view _word, aoc::part _part)
   std::unreachable();
 }
 
-uint64_t aoc_2023::day_01::solve(std::string_view _input, aoc::part _part) noexcept
+uint64_t aoc_2023::day_01::solve(std::string_view _input, aoc::part _part) const noexcept
 {
   return std::ranges::fold_left(std::views::split(_input, '\n'), 0ull, [_part](uint64_t _sum, const auto _word) {
     return _sum + as_number(std::string_view{ _word }, _part);

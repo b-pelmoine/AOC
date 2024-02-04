@@ -13,7 +13,7 @@ using y2023 = aoc::problem_for_date<2023, _day>;
 
 struct day_01 : public y2023<aoc::day_01>
 {
-  uint64_t solve(std::string_view _input, aoc::part _part) noexcept;
+  uint64_t solve(std::string_view _input, aoc::part _part) const noexcept;
 };
 
 }// namespace aoc_2023
